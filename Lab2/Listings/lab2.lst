@@ -4,74 +4,74 @@
 ARM Macro Assembler    Page 1 
 
 
-    1 00000000                 AREA             MyData, CODE
-    2 00000000         
-    3 00000000         array1
-    4 00000000 87654321 
-              23456789 
-              3456789A         DCD              0x87654321, 0x23456789, 0x34567
-89A
-    5 0000000C         array2
-    6 0000000C AABBCCDD 
-              7FCCDDEE 
-              CCDDEEFF         DCD              0xAABBCCDD, 0x7FCCDDEE, 0xCCDDE
-EFF
-    7 00000018         
-    8 00000018                 AREA             MyAnswers, DATA
-    9 00000000         array3
-   10 00000000 00 00 00 
-              00 00 00 
-              00 00 00 
-              00 00 00         SPACE            12
-   11 0000000C         
-   12 0000000C         
-   13 0000000C                 AREA             MyCode, CODE, READONLY
-   14 00000000                 EXPORT           __main
-   15 00000000                 EXPORT           mySystemInit
-   16 00000000         
-   17 00000000         mySystemInit
-   18 00000000 4770            BX               LR
-   19 00000002         
-   20 00000002         __main
-   21 00000002                 ENTRY
-   22 00000002 480F            LDR              R0, =array1
-   23 00000004 490F            LDR              R1, =array2
-   24 00000006 4A10            LDR              R2, =array3
-   25 00000008         
-   26 00000008 F850 3B04       LDR              R3, [R0], #4
-   27 0000000C F851 4B04       LDR              R4, [R1], #4
-   28 00000010 191C            ADDS             R4, R3, R4
-   29 00000012 F842 4B04       STR              R4, [R2], #4
-   30 00000016         
-   31 00000016 F850 3B04       LDR              R3, [R0], #4
-   32 0000001A F851 4B04       LDR              R4, [R1], #4
-   33 0000001E 191C            ADDS             R4, R3, R4
-   34 00000020 F842 4B04       STR              R4, [R2], #4
-   35 00000024         
-   36 00000024 6803            LDR              R3, [R0]
-   37 00000026 680C            LDR              R4, [R1]
-   38 00000028 191C            ADDS             R4, R3, R4
-   39 0000002A 6014            STR              R4, [R2]
-   40 0000002C         
-   41 0000002C F04F 5008       LDR              R0, =0x22000000
-   42 00000030 F04F 0120       LDR              R1, =32
-   43 00000034         
-   44 00000034         loop
-   45 00000034 F850 2B04       LDR              R2, [R0], #4
-   46 00000038 3901            SUBS             R1, #1
-   47 0000003A D1FB            BNE              loop
-   48 0000003C         
-   49 0000003C E7FE            B                .
-   50 0000003E                 END
+    1 00000000         
+    2 00000000                 AREA             MyData, DATA
+    3 00000000         
+    4 00000000                 AREA             MyCode, CODE, READONLY
+    5 00000000                 EXPORT           __main
+    6 00000000                 EXPORT           mySystemInit
+    7 00000000                 IMPORT           addstack
+    8 00000000         
+    9 00000000         mySystemInit
+   10 00000000 4770            BX               LR
+   11 00000002         
+   12 00000002         
+   13 00000002         __main
+   14 00000002                 ENTRY
+   15 00000002         ;Move the address for storing into R0
+   16 00000002 F241 0000       MOVW             R0, #0x1000
+   17 00000006 F2C2 0000       MOVT             R0, #0x2000
+   18 0000000A         
+   19 0000000A         ;Move first item of the first array into R1
+   20 0000000A F244 3121       MOVW             R1, #0x4321
+   21 0000000E F2C8 7165       MOVT             R1, #0x8765
+   22 00000012         ;Store R1 into the location held by R0
+   23 00000012 F840 1B04       STR              R1, [R0], #4
+   24 00000016         
+   25 00000016         ;Move second item of the first array into R2
+   26 00000016 F246 7289       MOVW             R2, #0x6789
+   27 0000001A F2C2 3245       MOVT             R2, #0x2345
+   28 0000001E         
+   29 0000001E F840 2B04       STR              R2, [R0], #4
+   30 00000022         
+   31 00000022         ;Move third item of the first array into R3
+   32 00000022 F647 039A       MOVW             R3, #0x789A
+   33 00000026 F2C3 4356       MOVT             R3, #0x3456
+   34 0000002A         
+   35 0000002A F840 3B04       STR              R3, [R0], #4
+   36 0000002E         
+   37 0000002E         ;Move the address for storing into R0
+   38 0000002E F241 0050       MOVW             R0, #0x1050
+   39 00000032 F2C2 0000       MOVT             R0, #0x2000
+   40 00000036         
+   41 00000036         ;Move first item of the second array into R1
+   42 00000036 F64C 41DD       MOVW             R1, #0xCCDD
+   43 0000003A F6CA 21BB       MOVT             R1, #0xAABB
+   44 0000003E         ;Store R1 into the location held by R0
+   45 0000003E F840 1B04       STR              R1, [R0], #4
+   46 00000042         
+   47 00000042         ;Move second item of the second array into R2
+   48 00000042 F64D 52EE       MOVW             R2, #0xDDEE
+   49 00000046 F6C7 72CC       MOVT             R2, #0x7FCC
+   50 0000004A         
+   51 0000004A F840 2B04       STR              R2, [R0], #4
+   52 0000004E         
+   53 0000004E         ;Move third item of the second array into R3
+   54 0000004E F64E 63FF       MOVW             R3, #0xEEFF
+   55 00000052 F6CC 43DD       MOVT             R3, #0xCCDD
+   56 00000056         
+   57 00000056 F840 3B04       STR              R3, [R0], #4
+   58 0000005A         
+   59 0000005A F7FF FFFE       BL               addstack
 
 
 
 ARM Macro Assembler    Page 2 
 
 
-              00 00 00000000 
-              00000000 
-              00000000 
+   60 0000005E         
+   61 0000005E E7FE            B                .
+   62 00000060                 END
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=.\objects\lab2.d -o.\objects\lab2.o -I.\RTE\_Target_1 -IC:\Users\B
 rent\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include -IC:\Users\Bren
@@ -89,50 +89,11 @@ MyData 00000000
 
 Symbol: MyData
    Definitions
-      At line 1 in file lab2.s
+      At line 2 in file lab2.s
    Uses
       None
 Comment: MyData unused
-array1 00000000
-
-Symbol: array1
-   Definitions
-      At line 3 in file lab2.s
-   Uses
-      At line 22 in file lab2.s
-Comment: array1 used once
-array2 0000000C
-
-Symbol: array2
-   Definitions
-      At line 5 in file lab2.s
-   Uses
-      At line 23 in file lab2.s
-Comment: array2 used once
-3 symbols
-
-
-
-ARM Macro Assembler    Page 1 Alphabetic symbol ordering
-Relocatable symbols
-
-MyAnswers 00000000
-
-Symbol: MyAnswers
-   Definitions
-      At line 8 in file lab2.s
-   Uses
-      None
-Comment: MyAnswers unused
-array3 00000000
-
-Symbol: array3
-   Definitions
-      At line 9 in file lab2.s
-   Uses
-      At line 24 in file lab2.s
-Comment: array3 used once
-2 symbols
+1 symbol
 
 
 
@@ -143,7 +104,7 @@ MyCode 00000000
 
 Symbol: MyCode
    Definitions
-      At line 13 in file lab2.s
+      At line 4 in file lab2.s
    Uses
       None
 Comment: MyCode unused
@@ -151,25 +112,32 @@ __main 00000002
 
 Symbol: __main
    Definitions
-      At line 20 in file lab2.s
+      At line 13 in file lab2.s
    Uses
-      At line 14 in file lab2.s
+      At line 5 in file lab2.s
 Comment: __main used once
-loop 00000034
-
-Symbol: loop
-   Definitions
-      At line 44 in file lab2.s
-   Uses
-      At line 47 in file lab2.s
-Comment: loop used once
 mySystemInit 00000000
 
 Symbol: mySystemInit
    Definitions
-      At line 17 in file lab2.s
+      At line 9 in file lab2.s
    Uses
-      At line 15 in file lab2.s
+      At line 6 in file lab2.s
 Comment: mySystemInit used once
-4 symbols
-346 symbols in table
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+addstack 00000000
+
+Symbol: addstack
+   Definitions
+      At line 7 in file lab2.s
+   Uses
+      At line 59 in file lab2.s
+Comment: addstack used once
+1 symbol
+340 symbols in table

@@ -1,0 +1,92 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             MyData, DATA
+    2 00000000         
+    3 00000000                 AREA             MyCode, CODE, READONLY
+    4 00000000                 EXPORT           addstack
+    5 00000000         addstack
+    6 00000000         ;Move the address for the first array into R0
+    7 00000000 F241 0000       MOVW             R0, #0x1000
+    8 00000004 F2C2 0000       MOVT             R0, #0x2000
+    9 00000008         
+   10 00000008         ;Move the address for second array into R1
+   11 00000008 F241 0150       MOVW             R1, #0x1050
+   12 0000000C F2C2 0100       MOVT             R1, #0x2000
+   13 00000010         
+   14 00000010         ;Move the address for addition array into R2
+   15 00000010 F241 1200       MOVW             R2, #0x1100
+   16 00000014 F2C2 0200       MOVT             R2, #0x2000
+   17 00000018         
+   18 00000018 F04F 0503       LDR              R5, =3
+   19 0000001C         
+   20 0000001C         loop
+   21 0000001C         
+   22 0000001C F850 3B04       LDR              R3, [R0], #4
+   23 00000020 F851 4B04       LDR              R4, [R1], #4
+   24 00000024 191C            ADDS             R4, R3, R4
+   25 00000026 F842 4B04       STR              R4, [R2], #4
+   26 0000002A 3D01            SUBS             R5, #1
+   27 0000002C D1F6            BNE              loop
+   28 0000002E         
+   29 0000002E         
+   30 0000002E BF00            NOP
+   31 00000030 E7FE            B                .
+   32 00000032                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=.\objects\main.d -o.\objects\main.o -I.\RTE\_Target_1 -IC:\Users\B
+rent\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include -IC:\Users\Bren
+t\AppData\Local\Arm\Packs\Keil\STM32F2xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM3
+2F2xx\Include --predefine="__EVAL SETA 1" --predefine="__MICROLIB SETA 1" --pre
+define="__UVISION_VERSION SETA 528" --predefine="_RTE_ SETA 1" --predefine="STM
+32F207xx SETA 1" --list=.\listings\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+MyData 00000000
+
+Symbol: MyData
+   Definitions
+      At line 1 in file main.s
+   Uses
+      None
+Comment: MyData unused
+1 symbol
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+MyCode 00000000
+
+Symbol: MyCode
+   Definitions
+      At line 3 in file main.s
+   Uses
+      None
+Comment: MyCode unused
+addstack 00000000
+
+Symbol: addstack
+   Definitions
+      At line 5 in file main.s
+   Uses
+      At line 4 in file main.s
+Comment: addstack used once
+loop 0000001C
+
+Symbol: loop
+   Definitions
+      At line 20 in file main.s
+   Uses
+      At line 27 in file main.s
+Comment: loop used once
+3 symbols
+339 symbols in table
