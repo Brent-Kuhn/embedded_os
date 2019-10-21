@@ -3,11 +3,19 @@
 <title>Static Call Graph - [.\Objects\lab3.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\lab3.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Tue Oct 15 12:42:50 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Mon Oct 21 14:21:46 2019
 <BR><P>
-<H3>Maximum Stack Usage =         24 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =          8 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-main &rArr; findLowBitC
+main
+<P>
+<H3>
+Functions with no stack information
+</H3><UL>
+ <LI><a href="#[69]">mySystemInit</a>
+ <LI><a href="#[61]">findLowBitASM</a>
+</UL>
+</UL>
 <P>
 <H3>
 Mutually Recursive functions
@@ -464,25 +472,26 @@ Global Symbols
 
 <P><STRONG><a name="[68]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
 
+<P><STRONG><a name="[69]"></a>mySystemInit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, lab3_1.o(Asm), UNUSED)
+
+<P><STRONG><a name="[61]"></a>findLowBitASM</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, lab3_1.o(Asm))
+<BR><BR>[Called By]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
 <P><STRONG><a name="[5b]"></a>SystemInit</STRONG> (Thumb, 68 bytes, Stack size 0 bytes, system_stm32f2xx.o(i.SystemInit))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f207xx.o(.text)
 </UL>
-<P><STRONG><a name="[69]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
+<P><STRONG><a name="[6a]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
 
-<P><STRONG><a name="[6a]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
+<P><STRONG><a name="[6b]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
 
-<P><STRONG><a name="[6b]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
-
-<P><STRONG><a name="[61]"></a>findLowBitC</STRONG> (Thumb, 54 bytes, Stack size 16 bytes, lab3.o(i.findLowBitC))
-<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = findLowBitC
-</UL>
-<BR>[Called By]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-</UL>
+<P><STRONG><a name="[6c]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
 <P><STRONG><a name="[5a]"></a>main</STRONG> (Thumb, 38 bytes, Stack size 8 bytes, lab3.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = main &rArr; findLowBitC
+<BR><BR>[Stack]<UL><LI>Max Depth = 8 + Unknown Stack Size
+<LI>Call Chain = main
 </UL>
-<BR>[Calls]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;findLowBitC
+<BR>[Calls]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;findLowBitASM
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL><P>
