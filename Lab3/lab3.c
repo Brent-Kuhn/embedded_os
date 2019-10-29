@@ -33,8 +33,8 @@ int main(void){
 	int i;
 	volatile int position;
 	for (i = 0; i<narrays; i++){
-		position = findLowBitASM(arrays[i]);
-		//position = findLowBitC(arrays[i]);
+		//position = findLowBitASM(arrays[i]);
+		position = findLowBitC(arrays[i]);
 	}
 	while(1){
 		position++;

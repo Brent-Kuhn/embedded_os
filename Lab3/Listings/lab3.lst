@@ -6,77 +6,69 @@ ARM Macro Assembler    Page 1
 
     1 00000000                 AREA             Asm, CODE
     2 00000000                 EXPORT           findLowBitASM
-    3 00000000                 EXPORT           mySystemInit
-    4 00000000         
-    5 00000000         mySystemInit
-    6 00000000 4770            BX               LR
-    7 00000002         
-    8 00000002         findLowBitASM
-    9 00000002 F04F 0A00       MOV              R10, #0     ; Load 0 for the cu
+    3 00000000         
+    4 00000000         findLowBitASM
+    5 00000000 F04F 0A00       MOV              R10, #0     ; Load 0 for the cu
                                                             rrent position
-   10 00000006 F04F 0308       MOV              R3, #8      ; Load 8 for counti
-                                                            ng through array el
-                                                            ements
-   11 0000000A 4684            MOV              R12, R0     ; Save R0 value int
+    6 00000004         
+    7 00000004 4684            MOV              R12, R0     ; Save R0 value int
                                                             o R12
-   12 0000000C         L1
-   13 0000000C 6804            LDR              R4, [R0]    ; Load the value of
+    8 00000006         L1
+    9 00000006 6804            LDR              R4, [R0]    ; Load the value of
                                                              R4 with the value 
                                                             from address R0 (wh
                                                             ere the pointer fro
                                                             m the array is sitt
                                                             ing)
-   14 0000000E F04F 0220       MOV              R2, #32     ; Load 32 for itera
+   10 00000008 F04F 0720       MOV              R7, #32     ; Load 32 for itera
                                                             ting through all 32
                                                              bits in each eleme
                                                             nt
-   15 00000012         L2
-   16 00000012 F004 0501       AND              R5, R4, #0x00001 ; And 0x0001 a
-                                                            nd the current valu
-                                                            e to check and see 
-                                                            if equal to 1
-   17 00000016 2D01            CMP              R5, #0x0001 ; Compare R5 with 0
-                                                            x0001 if it is one,
-                                                             then we found our 
-                                                            item
-   18 00000018 EA4F 0444       LSL              R4, R4, #1  ; Left shift once i
-                                                            n prep for next che
-                                                            ck
-   19 0000001C D008            BEQ              EXIT        ; Leave the functio
+   11 0000000C         L2
+   12 0000000C F004 0901       AND              R9, R4, #0x000000001 ; And 0x00
+                                                            000001 and the curr
+                                                            ent value to check 
+                                                            and see if equal to
+                                                             1
+   13 00000010 F1B9 0F01       CMP              R9, #0x00000001 ; Compare R9 wi
+                                                            th 0x00000001 if it
+                                                             is one, then we fo
+                                                            und our item
+   14 00000014 D008            BEQ              EXIT        ; Leave the functio
                                                             n and return the va
                                                             lue
-   20 0000001E F10A 0A01       ADD              R10, R10, #1 ; Increase the pos
+   15 00000016 EA4F 0454       LSR              R4, R4, #1  ; Left shift once i
+                                                            n prep for next che
+                                                            ck
+   16 0000001A F10A 0A01       ADD              R10, R10, #1 ; Increase the pos
                                                             ition counter
-   21 00000022 1E52            SUBS             R2, R2, #1  ; Loop1 counter
-   22 00000024 D1F5            BNE              L2          ; Else move to the 
+   17 0000001E 1E7F            SUBS             R7, R7, #1  ; Loop1 counter
+   18 00000020 D1F4            BNE              L2          ; Else move to the 
                                                             next bit in that ba
                                                             d boy
-   23 00000026 1E73            SUBS             R3, R6, #1  ; If this value is 
-                                                            zero, we have been 
-                                                            through all element
-                                                            s in the array
-   24 00000028 D002            BEQ              EXIT
-   25 0000002A F100 0004       ADD              R0, R0, #4  ; Move to the next 
+   19 00000022 F100 0001       ADD              R0, R0, #1  ; Move to the next 
                                                             elememt (Size may b
                                                             e wrong)
-   26 0000002E E7ED            B                L1
-   27 00000030         
-   28 00000030         
-   29 00000030         EXIT
+   20 00000026 E7EE            B                L1
+   21 00000028         
+   22 00000028         
+   23 00000028         EXIT
+   24 00000028 4650            MOV              R0, R10
+   25 0000002A         
+   26 0000002A         ; Need to figure out how to return the location value
+   27 0000002A 4770            BX               LR
+   28 0000002C                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=.\objects\lab3_1.d -o.\objects\lab3_1.o -I.\RTE\_Target_1 -IC:\Use
+rs\Brent\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include -IC:\Users\
+Brent\AppData\Local\Arm\Packs\Keil\STM32F2xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\
+STM32F2xx\Include --predefine="__EVAL SETA 1" --predefine="__MICROLIB SETA 1" -
 
 
 
 ARM Macro Assembler    Page 2 
 
 
-   30 00000030 4660            MOV              R0, R12
-   31 00000032         ; Need to figure out how to return the location value
-   32 00000032                 END
-Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
-ork --depend=.\objects\lab3_1.d -o.\objects\lab3_1.o -I.\RTE\_Target_1 -IC:\Use
-rs\Brent\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include -IC:\Users\
-Brent\AppData\Local\Arm\Packs\Keil\STM32F2xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\
-STM32F2xx\Include --predefine="__EVAL SETA 1" --predefine="__MICROLIB SETA 1" -
 -predefine="__UVISION_VERSION SETA 528" --predefine="_RTE_ SETA 1" --predefine=
 "STM32F207xx SETA 1" --list=.\listings\lab3.lst lab3.s
 
@@ -93,46 +85,37 @@ Symbol: Asm
    Uses
       None
 Comment: Asm unused
-EXIT 00000030
+EXIT 00000028
 
 Symbol: EXIT
    Definitions
-      At line 29 in file lab3.s
+      At line 23 in file lab3.s
    Uses
-      At line 19 in file lab3.s
-      At line 24 in file lab3.s
-
-L1 0000000C
+      At line 14 in file lab3.s
+Comment: EXIT used once
+L1 00000006
 
 Symbol: L1
    Definitions
-      At line 12 in file lab3.s
+      At line 8 in file lab3.s
    Uses
-      At line 26 in file lab3.s
+      At line 20 in file lab3.s
 Comment: L1 used once
-L2 00000012
+L2 0000000C
 
 Symbol: L2
    Definitions
-      At line 15 in file lab3.s
+      At line 11 in file lab3.s
    Uses
-      At line 22 in file lab3.s
+      At line 18 in file lab3.s
 Comment: L2 used once
-findLowBitASM 00000002
+findLowBitASM 00000000
 
 Symbol: findLowBitASM
    Definitions
-      At line 8 in file lab3.s
+      At line 4 in file lab3.s
    Uses
       At line 2 in file lab3.s
 Comment: findLowBitASM used once
-mySystemInit 00000000
-
-Symbol: mySystemInit
-   Definitions
-      At line 5 in file lab3.s
-   Uses
-      At line 3 in file lab3.s
-Comment: mySystemInit used once
-6 symbols
-341 symbols in table
+5 symbols
+340 symbols in table
