@@ -29,21 +29,23 @@ int main(void){
 	// Create an array that gives us index values for each screen point
 	int32_t screenIndex[16][6][2];
 	int32_t j = 0;
-	for(int y = dy; y < (GLCD_HEIGHT - dy);) {
+	for(int y = dy; y < (GLCD_HEIGHT - dy); y = y+fh) {
 		int32_t i = 0;
-		for(int x = dx; x < (GLCD_WIDTH - dx);) {
+		for(int x = dx; x < (GLCD_WIDTH - dx); x = x+fw) {
 			screenIndex[i][j][0] = x;
 			i++;
-			x = x+fw; // Move right by one char width
+			//x = x+fw; // Move right by one char width
 		}
 		screenIndex[i][j][1] = y;
 		j++;
-		y = y+fh; // Move down by one char height
+		//y = y+fh; // Move down by one char height
 	}
 	// Now you can get any position by using screenIndex[x][y][coord] where coord is 0 for x and 1 for y
 	// For example to get position (1,3) y-value: screenIndex[0][2][1]
 	
 	draw(); // Draw the ascii char on the screen
+	// This is to test the indexing of the screenIndex matrix.  This should highlight the above example
+	// If this works, then this should be used dynamically to change the highlighted text
 	highlightText(screenIndex[0][2][0],screenIndex[0][2][1]);
 
 // Add Additional lines of code if required //
