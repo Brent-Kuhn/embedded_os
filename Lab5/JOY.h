@@ -12,6 +12,7 @@
  * Copyright (c) 2004-2011 Keil - An ARM Company. All rights reserved.
  *----------------------------------------------------------------------------*/
 
+#include <stdint.h>
 #ifndef __JOY_H
 #define __JOY_H
 

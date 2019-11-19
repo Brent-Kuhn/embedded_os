@@ -6,18 +6,19 @@
 #include "Serial.h"
 
 extern GLCD_FONT GLCD_Font_16x24;
-uint32_t fw,fh,dx,dy;
+uint32_t fw,fh,dx,dy, hex, xc, yc, xmin, xmax, ymin, ymax;
 bool ready;
 
 void setup(void);
 void SysTick_Handler(void);
 void draw(void);
-void highlightText(uint32_t x,uint32_t y);
+void highlightText(uint32_t x,uint32_t y, uint32_t c);
 void toPosition(int * p);
 void getPos(uint32_t ch,int *p);
 void LED (uint32_t c);
 void sampleJoystick(void);
-void ClearHighlight(uint32_t c);
+void clearHighlight(uint32_t x,uint32_t y, uint32_t c);
+void wait(void);
 
 
 int main(void){
@@ -26,32 +27,26 @@ int main(void){
 	SysTick_Config(SystemCoreClock/1000);
 	setup();
 	GLCD_ClearScreen();
-	// Create an array that gives us index values for each screen point
-	int32_t screenIndex[16][6][2];
-	int32_t j = 0;
-	for(int y = dy; y < (GLCD_HEIGHT - dy); y = y+fh) {
-		int32_t i = 0;
-		for(int x = dx; x < (GLCD_WIDTH - dx); x = x+fw) {
-			screenIndex[i][j][0] = x;
-			i++;
-			//x = x+fw; // Move right by one char width
-		}
-		screenIndex[i][j][1] = y;
-		j++;
-		//y = y+fh; // Move down by one char height
-	}
-	// Now you can get any position by using screenIndex[x][y][coord] where coord is 0 for x and 1 for y
-	// For example to get position (1,3) y-value: screenIndex[0][2][1]
 	
 	draw(); // Draw the ascii char on the screen
-	// This is to test the indexing of the screenIndex matrix.  This should highlight the above example
-	// If this works, then this should be used dynamically to change the highlighted text
-	highlightText(screenIndex[0][2][0],screenIndex[0][2][1]);
+	
+	// Use xc and yc as current x and y position
+	// Use hex as the current hex value +/-x = +/-0x01 hex +/-y = +/-0x10 hex
+	hex = 0x20;
+	xc = dx;
+	yc = dy;
+	xmin = dx;
+	xmax = GLCD_WIDTH - dx;
+	ymin = dy;
+	ymax = GLCD_HEIGHT - dy;
+	
+	// Add Additional lines of code if required //
+	highlightText(xc,yc, hex);
+	LED(hex);
 
-// Add Additional lines of code if required //
-
-
-		while(1){}
+	while(1);
+	
+	return 0;
 }
 
 /**Initialize the peripherals: Already Done**/
@@ -89,14 +84,14 @@ void draw(void){
 	GLCD_SetBackgroundColor(GLCD_COLOR_PURPLE); // Set the background as purple
 	GLCD_SetForegroundColor(GLCD_COLOR_WHITE); // Set the text color to white
 	// Starting from the top of the screen offset by one space to the second to last row of the screen
-	for(int y = dy; y < (GLCD_HEIGHT - dy);) {
+	for(int y = dy; y < (GLCD_HEIGHT - dy); y = y+fh) {
 		// Starting from the left of the screen offset by one space to the second to last column
-		for(int x = dx; x < (GLCD_WIDTH - dx);) {
+		for(int x = dx; x < (GLCD_WIDTH - dx); x = x+fw) {
 			GLCD_DrawChar(x, y, character); // Draw the char in the current position
 			character++; // Increase the char value
-			x = x+fw; // Move right by one char width
+			//x = x+fw; // Move right by one char width
 		}
-		y = y+fh; // Move down by one char height
+		//y = y+fh; // Move down by one char height
 	}
 }
 
@@ -104,11 +99,13 @@ void draw(void){
 /**Highlight the character c in the 16x6 grid **/
 
 
-void highlightText(uint32_t x,uint32_t y){
+void highlightText(uint32_t x,uint32_t y, uint32_t c){
 
+	GLCD_SetForegroundColor(GLCD_COLOR_BLACK); // Set the text color to white
+	GLCD_DrawChar(x, y, c);
 	GLCD_SetForegroundColor(GLCD_COLOR_GREEN);
 	GLCD_DrawRectangle(x, y, fw, fh);
-
+	wait();
 }
 
 
@@ -142,9 +139,7 @@ void getPos(uint32_t ch,int *p){
 
 
 void LED (uint32_t c){
-	
-/***PUT YOUR CODE HERE***/
-			
+	LED_SetOut(c);		
 }
 
 
@@ -152,11 +147,68 @@ void LED (uint32_t c){
 
 
 void sampleJoystick(void){
-		if(!ready)return;//initialization has not completed, abort
-		uint32_t key = JOY_GetKeys();
-
-/***PUT YOUR CODE HERE***/
-		
+	if(!ready)return;//initialization has not completed, abort
+	uint32_t key = JOY_GetKeys();
+	if (key == JOY_RIGHT) {
+		// If the right button is pushed and we aren't at the edge of the screen
+		// Move to the right
+		if (xc < xmax - fw) {
+			clearHighlight(xc, yc, hex);
+			// Increase xc to move right
+			xc += fw;
+			// Increase the hex value
+			hex += 1;
+			// Send the hex value out to the leds
+			LED(hex);
+			// Highlight the new text
+			highlightText(xc, yc, hex);
+		}
+	}
+	else if (key == JOY_LEFT) {
+		// If the left button is pushed and we aren't at the edge of the screen
+		// Move to the left
+		if (xc > xmin) {
+			// Clear the current highlight
+			clearHighlight(xc, yc, hex);
+			// Decrease xc to move left
+			xc -= fw;
+			// Decrease the hex value
+			hex -= 1;
+			// Send the he value out to the leds
+			LED(hex);
+			// Highlight the new text
+			highlightText(xc, yc, hex);
+		}
+	}
+	else if (key == JOY_DOWN) {
+		if(yc < ymax - fh) {
+			// Clear the current highlight
+			clearHighlight(xc, yc, hex);
+			// Increase yc to move down
+			yc += fh;
+			// Decrease the hex value by 0x10
+			hex += 0x10;
+			// Send the he value out to the leds
+			LED(hex);
+			// Highlight the new text
+			highlightText(xc, yc, hex);
+		}
+	}
+	else if (key == JOY_UP) {
+		if(yc > ymin) {
+			// Clear the current highlight
+			clearHighlight(xc, yc, hex);
+			// Decrease yc to move down
+			yc -= fh;
+			// Decrease the hex value by 0x10
+			hex -= 0x10;
+			// Send the he value out to the leds
+			LED(hex);
+			// Highlight the new text
+			highlightText(xc, yc, hex);
+		}
+	}
+	return;
 }
 
 
@@ -164,10 +216,14 @@ void sampleJoystick(void){
 
 
 
-void ClearHighlight(uint32_t c){
-
-/***PUT YOUR CODE HERE***/
+void clearHighlight(uint32_t x,uint32_t y, uint32_t c){
+	GLCD_SetForegroundColor(GLCD_COLOR_PURPLE);
+	GLCD_DrawRectangle(x, y, fw, fh);
+	GLCD_SetForegroundColor(GLCD_COLOR_WHITE); // Set the text color to white
+	GLCD_DrawChar(x, y, c);
 }
 
 
-
+void wait(void) {
+	for (int i = 0; i < 500000; i++);
+}
