@@ -212,10 +212,6 @@ void sampleJoystick(void){
 }
 
 
-/** Clear any previous highlight and highlight c **/
-
-
-
 void clearHighlight(uint32_t x,uint32_t y, uint32_t c){
 	GLCD_SetForegroundColor(GLCD_COLOR_PURPLE);
 	GLCD_DrawRectangle(x, y, fw, fh);
