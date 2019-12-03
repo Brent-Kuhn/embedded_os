@@ -2,7 +2,7 @@
 #include "rtosClockObjects.h"
 #include <stdint.h>
 /*----------------------------------------------------------------------------
- *      Thread 1 'Thread_Name': Sample thread
+ *      Thread 1 'hour_Thread': This thread drives the hour timer
  *---------------------------------------------------------------------------*/
  
 osThreadId_t hour_Thread;                        // thread id

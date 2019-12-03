@@ -3,7 +3,8 @@
 #include <stdint.h>
 
 /*----------------------------------------------------------------------------
- *      Thread 1 'Thread_Name': Sample thread
+ *      Thread 2 'minute_Thread': This thread drives the minute timer
+ *			as well as unlock the Hour thread 
  *---------------------------------------------------------------------------*/
  
 osThreadId_t minute_Thread;                        // thread id

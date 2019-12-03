@@ -2,7 +2,8 @@
 #include "rtosClockObjects.h"
 #include <stdint.h>
 /*----------------------------------------------------------------------------
- *      Thread 1 'Thread_Name': Sample thread
+ *      Thread 1 'second_Thread': This thread drives the second timer
+ *			as well as unlock the Minute thread 
  *---------------------------------------------------------------------------*/
  
 osThreadId_t second_Thread;                        // thread id

@@ -719,14 +719,14 @@ ta\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\RTOS2\Include -IC:\Users\Brent\AppData
 ARM Macro Assembler    Page 12 
 
 
-ta\Local\Arm\Packs\Keil\MDK-Middleware\7.9.0\Board -IC:\Users\Brent\AppData\Loc
-al\Arm\Packs\Keil\STM32F2xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include
- -IC:\Users\Brent\AppData\Local\Arm\Packs\Keil\STM32F2xx_DFP\2.9.0\Drivers\STM3
-2F2xx_HAL_Driver\Inc -IC:\Users\Brent\AppData\Local\Arm\Packs\Keil\STM32F2xx_DF
-P\2.9.0\MDK\Boards\Keil\MCBSTM32F200\Common --predefine="__EVAL SETA 1" --prede
-fine="__UVISION_VERSION SETA 528" --predefine="_RTE_ SETA 1" --predefine="STM32
-F207xx SETA 1" --list=.\listings\startup_stm32f207xx.lst RTE\Device\STM32F207IG
-Hx\startup_stm32f207xx.s
+ta\Local\Arm\Packs\Keil\MDK-Middleware\7.10.0\Board -IC:\Users\Brent\AppData\Lo
+cal\Arm\Packs\Keil\STM32F2xx_DFP\2.6.0\Drivers\CMSIS\Device\ST\STM32F2xx\Includ
+e -IC:\Users\Brent\AppData\Local\Arm\Packs\Keil\STM32F2xx_DFP\2.6.0\Drivers\STM
+32F2xx_HAL_Driver\Inc -IC:\Users\Brent\AppData\Local\Arm\Packs\Keil\STM32F2xx_D
+FP\2.6.0\MDK\Boards\Keil\MCBSTM32F200\Common --predefine="__EVAL SETA 1" --pred
+efine="__UVISION_VERSION SETA 528" --predefine="_RTE_ SETA 1" --predefine="STM3
+2F207xx SETA 1" --list=.\listings\startup_stm32f207xx.lst RTE\Device\STM32F207I
+GHx\startup_stm32f207xx.s
 
 
 
